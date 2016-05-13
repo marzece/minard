@@ -130,6 +130,39 @@ function display_caen(caen_info) {
     var caen = d3.select("#CAEN");
     caen.append('h4').text("Acquisition Mode = "+caen_info.acquisition_mode);
 }
+function display_array_as_list(node,arr,title) {
+    node.append('h3').text(title);
+    var dict = node.append('ul');
+    crate_list.selectAll('li')
+        .data(dict)
+        .enter()
+        .append('li')
+        .text(function(d) { return d;});
+
+}
+function display_dictionary_as_list(node,dict,title) {
+    node.append('h3').text(title);
+    var dict = node.append('ul');
+    crate_list.selectAll('li')
+        .data(dict)
+        .enter()
+        .append('li')
+        .text(function(d) { return d;});
+
+}
+function display_mtca_thresholds(dacs){
+
+    var mtc = d3.select('#mtc');
+
+    mtc.append('h3').text(title);
+    var crate_list = mtc.append('ul');
+    crate_list.selectAll('li')
+        .data(crates)
+        .enter()
+        .append('li')
+        .text(function(d) { return d;});
+    
+}
 function display_crate_mask(mask,dom_node,title,size_info) {
     var width = size_info.width;
     var height =size_info.height;
