@@ -292,6 +292,10 @@ def l2_filter():
     height = request.args.get('height',40,type=int)
     return render_template('l2_filter.html',step=step,height=height)
 
+@app.route('/pmtdb')
+def pmtdb():
+    return render_template('pmtdb.html')
+
 @app.route('/detector')
 def detector():
     return render_template('detector.html')
