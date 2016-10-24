@@ -294,7 +294,27 @@ def l2_filter():
 
 @app.route('/pmtdb')
 def pmtdb():
-    return render_template('pmtdb.html')
+    import sqlalchemy
+    try:
+        mysql = sqlalchemy.create_engine('mysql://%s:%s@%s/%s' %
+                                     (app.config['PMTDB_USER'],
+                                      app.config['PMTDB_PASS'],
+                                      app.config['PMTDB_HOST'],
+                                      app.config['PMTDB_NAME']))
+        conn = mysql.connect()
+        result = conn.execute("select * from pmtdb.PULLED_SNOPLUS")
+        conn.close()
+        if result is None:
+            return None
+
+        keys = result.keys()
+        rows = result.fetchall()
+        dbinfo = [dict(zip(keys,row)) for row in rows]
+
+    except Exception as e:
+        print(str(e))
+        pass
+    return render_template('pmtdb.html',dbinfo=dbinfo)
 
 @app.route('/detector')
 def detector():

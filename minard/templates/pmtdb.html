@@ -4,11 +4,40 @@
 {{ super() }}
 {% endblock %}
 {% block body %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/detector_state.css') }}" media="screen">
 {{ super() }}
 <div class="container">
-    <div class="row">
-        PMTDB INFO GOES HERE
-    </div>
+        <div class="row">
+                <div id="content">
+                        PMTDB INFO GOES HERE
+                </div>
+        </div>
 </div>
 {% endblock %}
-
+{% block script %}
+<script src="{{ url_for('static', filename='js/d3.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/crate.js') }}"></script>
+<script src="{{ url_for('static', filename='js/detector_state.js') }}"></script>
+<script type="text/javascript">
+    db_info = {{ dbinfo | tojson |safe}}
+    console.log(db_info[0]);
+    function ccc_to_id(crate,card,channel) {
+        return crate*512+card*32+channel;
+    }
+    function flatten_that_shit(data){
+        var ret = new Array(data.length);
+        var sum = 0;
+        for(var i=0;i<data.length;i++)
+        {
+            var d = data[i];
+            val = d.PmtRemoved | d.BadCable | d.pulledCable | d.rPulled | d.SnoLowOcc
+            ret[ccc_to_id(d.crate,d.slot,d.channel)] = val;
+        }
+        return ret;
+    }
+    d = flatten_that_shit(db_info);
+    node = d3.select('#content');
+    var sizeinfo = {"width":800,"height":300};
+    display_binary_crate_view(d,sizeinfo,node);
+</script>
+{% endblock %}
