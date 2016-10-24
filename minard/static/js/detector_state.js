@@ -178,8 +178,8 @@ function display_crate_view(data,sizeinfo,node,styling,hover_text)
 {
     var crate = crate_view()
         .caption(true)
-        .height(height)
-        .width(width);
+        .height(sizeinfo.height)
+        .width(sizeinfo.width);
     if(hover_text){
     crate.hover_text(hover_text);
     }
@@ -196,8 +196,8 @@ function display_crate_view(data,sizeinfo,node,styling,hover_text)
 
     var g = node.append('div')
             .attr('id','crate')
-            .attr('width',width)
-            .attr('height',height)
+            .attr('width',sizeinfo.width)
+            .attr('height',sizeinfo.height)
             .attr('class',"col-md-10 col-md-offset-1");
     g.datum(data).call(crate);
 }
