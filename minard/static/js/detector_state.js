@@ -766,30 +766,8 @@ function display_run_type(run_type,time_stamp) {
     date = moment.tz(time_stamp, "America/Toronto");
     str = date.format("ddd, MMM Do YYYY - HH:mm:ss z");
     appendToTitle('p',str);
-};
-function crate() {
-    var width = 780;
-    var height = 80;
-
-    function my(){
-
-    }
-    my.width = function(value) {
-        if(!arguments.length) {
-            return width;
-        }
-        width = value;
-        return my;
-    }
-    my.height = function(value) {
-        if(!arguments.length) {
-            return height;
-        }
-        height = value;
-        return my;
-    }
-    return my;
 }
+
 function change_colors(class_name,color) {
     var cols = document.getElementsByClassName(class_name);
     for(i=0;i<cols.length;i++) {
