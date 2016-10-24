@@ -8,7 +8,26 @@ function linspace(min, max, N) {
     }
     return a;
 }
-function display_binary_crate_view(key,crates_data,sizeinfo,node)
+function flatten_crate_data(key,crates_data){
+    var d = crates_data.map(function(crate,i) {
+    if(crate) {
+            MBs =  crate.fecs.map(function(mb,i) {
+                if(mb) {
+                    return mb[key];
+                }
+                else {
+                   return Array.apply(null,Array(32)).map(function(x,i){return null;})
+                }
+            });
+            return  flattenArray(MBs)
+        }
+        else {
+            return Array.apply(null,Array(512)).map(function(x,i){return null;})
+        }
+    });
+    return flattenArray(d)
+}
+function display_binary_crate_view(data,sizeinfo,node)
 {
     var coloringFunc = function(data) {
         return function(k,i) {
@@ -34,7 +53,7 @@ function display_binary_crate_view(key,crates_data,sizeinfo,node)
         return "on";
     }};
 
-    display_crate_view(key,crates_data,sizeinfo,node,
+    display_crate_view(data,sizeinfo,node,
             {'attrib':'class','func':coloringFunc},hover_text_func);
 }
 
@@ -90,7 +109,7 @@ function create_hover_text_color_bar(key,node,colors)
     return redraw;
 }
 
-function display_colorable_continuous_crate_view(key,crates_data,sizeinfo,node,bar_node)
+function display_colorable_continuous_crate_view(data,sizeinfo,node,bar_node,key)
 {
     node = node.append("div").attr("class","colorable_crate");
     color_menu = node.append("select")
@@ -109,7 +128,7 @@ function display_colorable_continuous_crate_view(key,crates_data,sizeinfo,node,b
 
     var bar_redraw = create_hover_text_color_bar(key, bar_node,default_color_scale);
 
-    var redraw = display_continuous_crate_view(key,crates_data,sizeinfo,default_color_scale,node);
+    var redraw = display_continuous_crate_view(data,sizeinfo,default_color_scale,node);
 
     function change_color_scale() {
         scale = color_scales[this.selectedIndex].value;
@@ -119,7 +138,7 @@ function display_colorable_continuous_crate_view(key,crates_data,sizeinfo,node,b
     color_menu.on("change", change_color_scale);
 }
 
-function display_continuous_crate_view(key,crates_data,sizeinfo,color_scale,node)
+function display_continuous_crate_view(data,sizeinfo,color_scale,node)
 {
     // This function draws a crate view at the given node and returns
     // a function that will re-draw view for different colors.
@@ -155,25 +174,8 @@ function display_continuous_crate_view(key,crates_data,sizeinfo,color_scale,node
     }
     return redraw
 }
-function display_crate_view(key,crates_data,sizeinfo,node,styling,hover_text)
+function display_crate_view(data,sizeinfo,node,styling,hover_text)
 {
-    var d = crates_data.map(function(crate,i) {
-    if(crate) {
-            MBs =  crate.fecs.map(function(mb,i) {
-                if(mb) {
-                    return mb[key];
-                }
-                else {
-                   return Array.apply(null,Array(32)).map(function(x,i){return null;})
-                }
-            });
-            return  flattenArray(MBs)
-        }
-        else {
-            return Array.apply(null,Array(512)).map(function(x,i){return null;})
-        }
-    });
-    d = flattenArray(d)
     var crate = crate_view()
         .caption(true)
         .height(height)
@@ -197,7 +199,7 @@ function display_crate_view(key,crates_data,sizeinfo,node,styling,hover_text)
             .attr('width',width)
             .attr('height',height)
             .attr('class',"col-md-10 col-md-offset-1");
-    g.datum(d).call(crate);
+    g.datum(data).call(crate);
 }
 function num_crates_in_rack(irack) {
     if(irack>11 || irack <=0) {
