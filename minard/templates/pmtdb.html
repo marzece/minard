@@ -8,9 +8,7 @@
 {{ super() }}
 <div class="container">
         <div class="row">
-                <div id="content">
-                        PMTDB INFO GOES HERE
-                </div>
+                <div id="content"> </div>
         </div>
 </div>
 {% endblock %}
@@ -20,7 +18,6 @@
 <script src="{{ url_for('static', filename='js/detector_state.js') }}"></script>
 <script type="text/javascript">
     db_info = {{ dbinfo | tojson |safe}}
-    console.log(db_info[0]);
     function ccc_to_id(crate,card,channel) {
         return crate*512+card*32+channel;
     }
@@ -30,7 +27,7 @@
         for(var i=0;i<data.length;i++)
         {
             var d = data[i];
-            val = d.PmtRemoved | d.BadCable | d.pulledCable | d.rPulled | d.SnoLowOcc
+            val = d.PmtRemoved | d.BadCable | d.pulledCable | d.rPulled
             ret[ccc_to_id(d.crate,d.slot,d.channel)] = val;
         }
         return ret;
