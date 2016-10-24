@@ -657,6 +657,7 @@ function display_mtca_thresholds(node,dacs,trigger_scan,enabled_dacs){
             return row;
         });
 }
+
 function display_bit_mask(mask,dom_node,title,size_info,title_text) {
     var width = size_info.width;
     var height =size_info.height;
@@ -696,7 +697,8 @@ function display_bit_mask(mask,dom_node,title,size_info,title_text) {
         .attr("font-size","10px")
         .attr("fill","white")
         .attr("y",function(d,i) { return 3;});
-};
+}
+
 function display_run_type(run_type,time_stamp) {
     var run_type_translation = {
     0:"Maintenance",

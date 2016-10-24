@@ -33,7 +33,7 @@ class ReverseProxied(object):
             environ['wsgi.url_scheme'] = scheme
         return self.app(environ, start_response)
 
-app = Flask(__name__)
+app = Flask(__name__,static_url_path='/home/ericm/minard/minard/static')
 
 app.config.from_envvar('MINARD_SETTINGS', silent=False)
 
