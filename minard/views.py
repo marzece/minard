@@ -54,7 +54,7 @@ class Program(object):
         self.expire = expire
         self.display_log = display_log
 
-redis = Redis()
+redis = Redis(host='minard.sp.snolab.ca')
 
 PROGRAMS = [Program('builder','builder1', description="event builder"),
             Program('L2-client','buffer1', description="L2 processor"),
